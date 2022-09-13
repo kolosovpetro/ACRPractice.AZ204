@@ -11,6 +11,8 @@ jobs:
   build-and-test-dotnet:
     name: Push and Deploy Container
     runs-on: ubuntu-latest
+    env:
+      ACR_REPOSITORY: "acr-practice-repository"
     steps:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2
@@ -39,5 +41,12 @@ jobs:
 
       - name: Build Docker File
         run: |
-          uuid=$(uuidgen)
-          echo $uuid
+          IMAGE_VERSION=$(uuidgen)
+          echo "Image version is $IMAGE_VERSION"
+          IMAGE_TAG="acr-practice-image-$IMAGE_VERSION"
+          echo "Image Tag is $IMAGE_TAG"
+          docker build -t "$ACR_REPOSITORY:$IMAGE_TAG" .
+          echo "IMAGE_REPO_AND_TAG=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+          echo "Image repo and tag is: ${{ env.IMAGE_REPO_AND_TAG }}
+        env:
+          ACR_NAME: ${{ secrets.ACR_NAME }}
