@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2
+        
+      - name: Test Azure CLI
+        run: az --version
 
       - name: ⚙ Setup .NET 6.0 SDK ⚙
         uses: actions/setup-dotnet@v1
