@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-test-dotnet:
-    name: Run Build and Test .NET
+    name: Push and Deploy Container
     runs-on: ubuntu-latest
     steps:
       - name: 📝 Fetch Sources 📝
@@ -26,9 +26,10 @@ jobs:
       - name: 🛠 Build .NET Project 🛠
         run: |
           dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release
-          
+
       - name: Login to ACR
-        run: echo "$DOCKER_PASSWORD" | docker login $ACR_URL -u "$DOCKER_USERNAME" --password-stdin
+        run: echo "$DOCKER_PASSWORD" | docker login "$ACR_URL" -u "$DOCKER_USERNAME" --password-stdin
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          ACR_URL: ${{ secrets.ACR_URL }}
