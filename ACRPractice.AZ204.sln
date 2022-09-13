@@ -19,6 +19,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\run-build-and-test-dotnet.yml = .github\workflows\run-build-and-test-dotnet.yml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{99FA3C35-608F-427F-98C7-529C96DB2A8D}"
+	ProjectSection(SolutionItems) = preProject
+		img\01_acr_push_output.PNG = img\01_acr_push_output.PNG
+		img\02_azure_portal_acr_repository.PNG = img\02_azure_portal_acr_repository.PNG
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

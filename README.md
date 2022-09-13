@@ -44,6 +44,28 @@ So, the following to be done:
 - Run image locally to test: `docker run -d -p 9000:80 --name acr-practice-test-run "${ACR_REPOSITORY}:$IMAGE_TAG"`
 - Navigate and verify app: `http://localhost:9000/swagger/index.html`
 
+## Create service principal and login to ACR
+
+- Read documentation about RBAC for
+  ACR: [MSDN](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-roles?tabs=azure-cli)
+- Define variable for service principal name: `$SERVICE_PRINCIPAL_NAME="PetroKolosovServicePrincipal"`
+- Define ACR ID variable: `$ACR_REGISTRY_ID=$(az acr show --name $ACR_NAME --query "id" --output tsv)`
+    - Btw it looks
+      like: `/subscriptions/{id}/resourceGroups/rg-acr-practice/providers/Microsoft.ContainerRegistry/registries/pkolosovregistry`
+- Define password
+  variable: `$PASSWORD=$(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --scopes $ACR_REGISTRY_ID --role acrpush --query "password" --output tsv)`
+    - Note (!!!): Password cannot be collected again, write it somewhere
+- Define username
+  variable: `$USER_NAME=$(az ad sp list --display-name $SERVICE_PRINCIPAL_NAME --query "[].appId" --output tsv)`
+- Validate password: `echo $PASSWORD`
+- Validate username: `echo $USER_NAME`
+- Login to ACR: `docker login $ACR_URL --username $USER_NAME --password $PASSWORD`
+
+## Tag docker image and push to ACR
+
+- Tag image: `docker tag "${ACR_REPOSITORY}:$IMAGE_TAG" "$ACR_URL/${ACR_REPOSITORY}:latest"`
+- Push to ACR: `docker image push -a "$ACR_URL/$ACR_REPOSITORY"`
+
 ## Notes
 
 - To build on behalf of Azure: `az acr build --registry $acrName --image ipcheck:latest .`
