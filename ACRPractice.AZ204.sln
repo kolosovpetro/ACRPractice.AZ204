@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "items", "items", "{079C0476
 		LICENSE.txt = LICENSE.txt
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
+		ACRPractice.AZ204\.dockerignore = ACRPractice.AZ204\.dockerignore
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{4BA1AE4B-00EC-4173-BAD5-CBF70F3AB0A5}"
