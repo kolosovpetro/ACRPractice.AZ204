@@ -16,6 +16,17 @@ jobs:
     steps:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2
+        
+      - name: Test set env variables
+        run: |
+          IMAGE_VERSION=$(uuidgen)
+          echo "Image version is $IMAGE_VERSION"
+          echo "ENV_IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
+          
+      - name: Test get env variables
+        run: |
+          echo "Env variable image tag: ${{ env.ENV_IMAGE_VERSION }}"
+        
 
       - name: Test Azure CLI
         run: az --version
@@ -46,7 +57,7 @@ jobs:
           IMAGE_TAG="acr-practice-image-$IMAGE_VERSION"
           echo "Image Tag is $IMAGE_TAG"
           docker build -t "$ACR_REPOSITORY:$IMAGE_TAG" .
-          echo "IMAGE_REPO_AND_TAG=$ACR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
+          echo "ENV_TAG=$IMAGE_TAG" >> $GITHUB_ENV
           echo "Image repo and tag is: ${{ env.IMAGE_REPO_AND_TAG }}"
         env:
           ACR_NAME: ${{ secrets.ACR_NAME }}
