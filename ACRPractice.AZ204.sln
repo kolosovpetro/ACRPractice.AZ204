@@ -23,6 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{99FA3C35-608
 	ProjectSection(SolutionItems) = preProject
 		img\01_acr_push_output.PNG = img\01_acr_push_output.PNG
 		img\02_azure_portal_acr_repository.PNG = img\02_azure_portal_acr_repository.PNG
+		img\03_aci_deploy_cli_output.PNG = img\03_aci_deploy_cli_output.PNG
+		img\04_aci_azure_portal.PNG = img\04_aci_azure_portal.PNG
+		img\05_app_in_browser.PNG = img\05_app_in_browser.PNG
 	EndProjectSection
 EndProject
 Global

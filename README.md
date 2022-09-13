@@ -66,6 +66,11 @@ So, the following to be done:
 - Tag image: `docker tag "${ACR_REPOSITORY}:$IMAGE_TAG" "$ACR_URL/${ACR_REPOSITORY}:latest"`
 - Push to ACR: `docker image push -a "$ACR_URL/$ACR_REPOSITORY"`
 
+## Deploy docker image to Azure Container Instances
+
+-
+Deploy: `az container create --resource-group "rg-acr-practice" --name "rg-acr-practice-cli-deploy" --dns-name-label "rg-acr-practice-cli-deploy" --ports 80 --image "$ACR_URL/${ACR_REPOSITORY}:latest" --registry-login-server $ACR_URL --registry-username $USER_NAME --registry-password $PASSWORD`
+
 ## Notes
 
 - To build on behalf of Azure: `az acr build --registry $acrName --image ipcheck:latest .`
