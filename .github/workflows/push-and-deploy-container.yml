@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: 📝 Fetch Sources 📝
         uses: actions/checkout@v2
-        
+
       - name: Test Azure CLI
         run: az --version
 
@@ -36,3 +36,8 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           ACR_URL: ${{ secrets.ACR_URL }}
+
+      - name: Build Docker File
+        run: |
+          uuid=$(uuidgen)
+          echo $uuid
