@@ -65,10 +65,11 @@ jobs:
       - name: Get repo and tag after build
         run: |
           echo "Env repo and tag is: ${{ env.ENV_REPO_AND_TAG }}"
-          
+
       - name: Tag docker image and push to ACR
         run: |
           ACR_IMAGE_VERSION=$(uuidgen)
-          ACR_IMAGE_VERSION=${ACR_IMAGE_VERSION//-/)
           docker tag "${{ env.ENV_REPO_AND_TAG }}" "$ACR_URL/$ACR_REPOSITORY:$ACR_IMAGE_VERSION"
           docker image push -a "$ACR_URL/$ACR_REPOSITORY:$ACR_IMAGE_VERSION"
+        env:
+          ACR_URL: ${{ secrets.ACR_URL }}
