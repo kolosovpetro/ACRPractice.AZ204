@@ -25,7 +25,7 @@ So, the following to be done:
 ## DockerFile creation
 
 - It is done and commented directly
-  there: [DockerFile](https://github.com/kolosovpetro/ACRPractice.AZ204/blob/master/ACRPractice.AZ204/Dockerfile)
+  there: [DockerFile](https://github.com/kolosovpetro/ACRPractice.AZ204/blob/master/Dockerfile)
 
 ## Build DockerFile and tag it properly
 

@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 # checkout to folder add inside base image
 WORKDIR /app
 
-# expose http and https ports
+# set container listen to http and https ports
 EXPOSE 80
 EXPOSE 443
 
