@@ -1,93 +1,37 @@
-﻿name: Push and Deploy Container
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-  workflow_dispatch:
+﻿on: [ push ]
+name: Linux_Container_Workflow
 
 jobs:
-  build-and-test-dotnet:
-    name: Push and Deploy Container
+  build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      ACR_REPOSITORY: "acr-practice-repository"
     steps:
-      - name: 📝 Fetch Sources 📝
-        uses: actions/checkout@v2
+      # checkout the repo
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
 
-      - name: Test set env variables
-        run: |
-          IMAGE_VERSION=$(uuidgen)
-          echo "Image version is $IMAGE_VERSION"
-          echo "ENV_IMAGE_VERSION=$IMAGE_VERSION" >> $GITHUB_ENV
-
-      - name: Test get env variables
-        run: |
-          echo "Env variable image tag: ${{ env.ENV_IMAGE_VERSION }}"
-
-
-      - name: Test Azure CLI
-        run: az --version
-
-      - name: ⚙ Setup .NET 6.0 SDK ⚙
-        uses: actions/setup-dotnet@v1
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
         with:
-          dotnet-version: 6.0.x
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: 🔄 Restore Nuget Packages 🔄
-        run: dotnet restore
+      - name: 'Build and push image'
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/acr-practice-repository:${{ github.sha }}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/acr-practice-repository:${{ github.sha }}
 
-      - name: 🛠 Build .NET Project 🛠
-        run: |
-          dotnet build --no-restore /p:ContinuousIntegrationBuild=true --configuration Release
-
-      - name: Login to ACR
-        run: echo "$DOCKER_PASSWORD" | docker login "$ACR_URL" -u "$DOCKER_USERNAME" --password-stdin
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          ACR_URL: ${{ secrets.ACR_URL }}
-
-      - name: Build Docker File
-        run: |
-          IMAGE_VERSION=$(uuidgen)
-          echo "Image version is $IMAGE_VERSION"
-          IMAGE_TAG="acr-practice-image-$IMAGE_VERSION"
-          echo "Image Tag is $IMAGE_TAG"
-          REPO_AND_TAG="$ACR_REPOSITORY:$IMAGE_TAG"
-          docker build -t "$REPO_AND_TAG" .
-          echo "ENV_REPO_AND_TAG=$REPO_AND_TAG" >> $GITHUB_ENV
-        env:
-          ACR_NAME: ${{ secrets.ACR_NAME }}
-
-      - name: Get repo and tag after build
-        run: |
-          echo "Env repo and tag is: ${{ env.ENV_REPO_AND_TAG }}"
-
-      - name: Tag docker image and push to ACR
-        run: |
-          ACR_IMAGE_VERSION=$(uuidgen)
-          echo "ENV_ACR_IMAGE_VERSION=$ACR_IMAGE_VERSION" >> $GITHUB_ENV
-          docker tag "${{ env.ENV_REPO_AND_TAG }}" "$ACR_URL/$ACR_REPOSITORY:$ACR_IMAGE_VERSION"
-          docker image push -a "$ACR_URL/$ACR_REPOSITORY"
-        env:
-          ACR_URL: ${{ secrets.ACR_URL }}
-
-      - name: Deploy image to Azure Container Instances
-        run: |
-          echo "$DOCKER_PASSWORD" | docker login "$ACR_URL" -u "$DOCKER_USERNAME" --password-stdin
-          az container create \
-          --resource-group "rg-acr-practice" \
-          --name "rg-acr-practice-cli-deploy" \
-          --dns-name-label "rg-acr-practice-cli-deploy" \
-          --ports 80 \
-          --image "$ACR_URL/$ACR_REPOSITORY:${{ env.ENV_ACR_IMAGE_VERSION }}" \
-          --registry-login-server $ACR_URL \
-          --registry-username $DOCKER_USERNAME \
-          --registry-password $DOCKER_PASSWORD
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          ACR_URL: ${{ secrets.ACR_URL }}
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/acr-practice-repository:${{ github.sha }}
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: aci-sampleapp
+          location: 'west us'
