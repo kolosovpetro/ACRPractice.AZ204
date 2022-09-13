@@ -69,5 +69,6 @@ jobs:
       - name: Tag docker image and push to ACR
         run: |
           ACR_IMAGE_VERSION=$(uuidgen)
+          ACR_IMAGE_VERSION=${ACR_IMAGE_VERSION//-/)
           docker tag "${{ env.ENV_REPO_AND_TAG }}" "$ACR_URL/$ACR_REPOSITORY:$ACR_IMAGE_VERSION"
           docker image push -a "$ACR_URL/$ACR_REPOSITORY:$ACR_IMAGE_VERSION"
