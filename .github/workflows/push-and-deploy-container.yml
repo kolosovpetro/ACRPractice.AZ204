@@ -64,4 +64,4 @@ jobs:
 
       - name: Get repo and tag after build
         run: |
-          echo "Env repo and tag is: ${{ env.ENV_REPO_AND_TAG }}
+          echo "Env repo and tag is: ${{ env.ENV_REPO_AND_TAG }}"
