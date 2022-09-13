@@ -68,8 +68,8 @@ So, the following to be done:
 
 ## Deploy docker image to Azure Container Instances
 
--
-Deploy: `az container create --resource-group "rg-acr-practice" --name "rg-acr-practice-cli-deploy" --dns-name-label "rg-acr-practice-cli-deploy" --ports 80 --image "$ACR_URL/${ACR_REPOSITORY}:latest" --registry-login-server $ACR_URL --registry-username $USER_NAME --registry-password $PASSWORD`
+- Deploy:
+  `az container create --resource-group "rg-acr-practice" --name "rg-acr-practice-cli-deploy" --dns-name-label "rg-acr-practice-cli-deploy" --ports 80 --image "$ACR_URL/${ACR_REPOSITORY}:latest" --registry-login-server $ACR_URL --registry-username $USER_NAME --registry-password $PASSWORD`
 
 ## Notes
 

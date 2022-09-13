@@ -17,6 +17,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{18F95225-3703-4D45-9F0D-65400FBEC651}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\run-build-and-test-dotnet.yml = .github\workflows\run-build-and-test-dotnet.yml
+		.github\workflows\push-and-deploy-container.yml = .github\workflows\push-and-deploy-container.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img", "img", "{99FA3C35-608F-427F-98C7-529C96DB2A8D}"
