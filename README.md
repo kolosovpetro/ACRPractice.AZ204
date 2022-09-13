@@ -68,7 +68,9 @@ So, the following to be done:
 
 ## Deploy docker image to Azure Container Instances
 
-- Deploy: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action
+- Deploy
+  command: `az container create --resource-group "rg-acr-practice" --name "rg-acr-practice-cli-deploy" --dns-name-label "rg-acr-practice-cli-deploy" --ports 80 --image "$ACR_URL/${ACR_REPOSITORY}:latest" --registry-login-server $ACR_URL --registry-username $USER_NAME --registry-password $PASSWORD`
+- Deploy guid: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-github-action
 - Store group ID: `$groupId=$(az group show --name "rg-acr-practice" --query id --output tsv)`
 - Create SP: `az ad sp create-for-rbac --scope $groupId --role Contributor --sdk-auth`
 - Store registry ID
