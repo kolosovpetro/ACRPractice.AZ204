@@ -13,6 +13,14 @@ So, the following to be done:
 - Push image to the `ACR` using appropriate authorization
 - Deploy image to the `Azure container instances`
 
+## Docker architecture
+
+Just for inform purposes and to refresh memory
+
+<p align="center">
+  <img src="./img/06_docker_architecture.png" height="300"  alt="Docker architecture"/>
+</p>
+
 ## Infrastructure provision
 
 - Create resource group: `az group create --name "rg-acr-practice" --location "westus"`
