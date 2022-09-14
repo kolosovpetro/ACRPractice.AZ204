@@ -71,8 +71,11 @@ Just for inform purposes and to refresh memory
 
 ## Tag docker image and push to ACR
 
+- Push requires authentication using login password pair or service principal
 - Tag image: `docker tag "${ACR_REPOSITORY}:$IMAGE_TAG" "$ACR_URL/${ACR_REPOSITORY}:latest"`
-- Push to ACR: `docker image push -a "$ACR_URL/$ACR_REPOSITORY"`
+- Push to ACR:
+    - With variables: `docker image push -a "$ACR_URL/$ACR_REPOSITORY"`
+    - Hardcoded: `docker image push -a "pkolosovregistry.azurecr.io/acr-practice-repository"`
 
 ## Deploy docker image to Azure Container Instances
 
