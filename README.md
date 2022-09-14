@@ -18,7 +18,7 @@ So, the following to be done:
 Just for inform purposes and to refresh memory
 
 <p align="center">
-  <img src="./img/06_docker_architecture.png" height="300"  alt="Docker architecture"/>
+  <img src="./img/06_docker_architecture.png" height="600"  alt="Docker architecture"/>
 </p>
 
 ## Infrastructure provision
